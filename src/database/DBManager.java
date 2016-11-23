@@ -29,8 +29,10 @@ public class DBManager implements Observer, IDBManager {
 	
 	private ArrayList<Observable> observables=new ArrayList<>();
 	
-	public DBManager() throws ClassNotFoundException, SQLException{
-		
+	private IDBConnection conn =null;
+	
+	public DBManager( IDBConnection conect) throws ClassNotFoundException, SQLException{
+		conn=conect;
 		Connection c=getDbConnection();
 		Statement stmt = c.createStatement();
 	    String sql = "CREATE TABLE IF NOT EXISTS " +dbTableName+
@@ -77,17 +79,7 @@ public class DBManager implements Observer, IDBManager {
 	    conn.close();
 	    return count;
 	}
-	/**
-	 * 
-	 * @return renvoie la connexion à la base de données dbName
-	 * @throws ClassNotFoundException
-	 * @throws SQLException
-	 */
-	private Connection getDbConnection(String dbName) throws ClassNotFoundException, SQLException{
-		
-			Class.forName("org.sqlite.JDBC");
-		    return DriverManager.getConnection("jdbc:sqlite:"+dbName+".db");	
-	}
+	
 	
 	/**
 	 * enregistre le nom d'une base de données 
@@ -138,7 +130,7 @@ public class DBManager implements Observer, IDBManager {
 	public void loadDb(String scriptFile, String dbName) throws ClassNotFoundException, IOException, SQLException{
 		
 		
-	    Connection con=getDbConnection(dbName);	
+	    Connection con= conn.getDBconnection(dbName) ;	
 		IDBLoader loader=new SQLDBLoader(con, false);
 		try {
 			loader.runScript(scriptFile);
@@ -187,7 +179,7 @@ public class DBManager implements Observer, IDBManager {
 	public ArrayList<String> getTableNames(String dbName) throws ClassNotFoundException, SQLException{
 		
 		ArrayList<String> results=new ArrayList<>();
-		Connection c=getDbConnection(dbName);
+		Connection c=conn.getDBconnection(dbName);
 		DatabaseMetaData meta = c.getMetaData();
 	    ResultSet res = meta.getTables(null, null,  "%", 
 	         new String[] {"TABLE"});

@@ -47,8 +47,11 @@ import javax.swing.table.TableCellEditor;
 import object.AttackGraph;
 import object.ConjonctiveRequest;
 import request.rewriting.RequestManager;
+import database.ConnectionType;
 import database.DBManager;
+import database.IDBConnection;
 import database.IDBManager;
+import database.SQLiteConnection;
 
 public class CqaView extends JFrame implements Observable{
 	
@@ -75,6 +78,7 @@ public class CqaView extends JFrame implements Observable{
 	private RequestParser parser=new RequestParser();
 	private IDBManager dbManager=null;
 	private String dbSelected=null;
+	private IDBConnection dbConnection=null;	
 	private RequestManager rqManager=null;
 	private ConjonctiveRequest q=null;
 	private AttackGraph g=null;	
@@ -89,8 +93,10 @@ public class CqaView extends JFrame implements Observable{
          }
         
 		try {
+			
+			dbConnection=new SQLiteConnection(ConnectionType.SQLITE);
 			rqManager=new RequestManager();
-			dbManager=new DBManager();
+			dbManager=new DBManager(dbConnection);
 			dbManager.addObservable(this);
 			
 			setTitle("Consistent query answering");			
@@ -103,10 +109,12 @@ public class CqaView extends JFrame implements Observable{
 			menuItem_removeDB=new JMenuItem("Remove database");
 			menuItem_exit=new JMenuItem("Exit");
 			
-			if(!dbManager.isthereData()){
+			if(!dbManager.isthereData() || dbConnection.getType()!=ConnectionType.SQLITE){
 				menuItem_chooseDB.setEnabled(false);
 				menuItem_removeDB.setEnabled(false);				
-			}	
+			}
+			if(dbConnection.getType()!=ConnectionType.SQLITE)
+				menuItem_loadDB.setEnabled(false);
 			
 			menuItem_chooseDB.addActionListener(new ActionListener() {
 				
