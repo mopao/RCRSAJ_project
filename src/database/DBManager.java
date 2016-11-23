@@ -52,12 +52,7 @@ public class DBManager implements Observer {
 		    return DriverManager.getConnection("jdbc:sqlite:"+dbName);	
 	}
 	
-	/**
-	 * vérifie si au moins une bd a été sauvegardée
-	 * @return retourne true si oui
-	 * @throws SQLException 
-	 * @throws ClassNotFoundException 
-	 */
+	
 	public boolean isthereData() throws ClassNotFoundException, SQLException{
 		
 		int count=getNumberofBd();
@@ -68,12 +63,7 @@ public class DBManager implements Observer {
 		return false;
 	}
 	
-	/**
-	 * 
-	 * @return le nombre de bases de données enregistrées
-	 * @throws ClassNotFoundException
-	 * @throws SQLException
-	 */
+	
 	public int getNumberofBd() throws ClassNotFoundException, SQLException{
 		String sql ="SELECT COUNT(*) AS NumberOfBd FROM "+dbTableName+";";
 		Connection conn=getDbConnection();
@@ -144,14 +134,7 @@ public class DBManager implements Observer {
 	    c.close();
 	    deleteDbFile(dbName);
 	}
-	/**
-	 * charge une base de données à partir d'un fichier script et l'enregistre
-	 * @param scriptFile : nom du fichier script
-	 * @param dbName : nom de la db a enregistrer
-	 * @throws ClassNotFoundException
-	 * @throws SQLException
-	 * @throws IOException
-	 */
+	
 	public void loadDb(String scriptFile, String dbName) throws ClassNotFoundException, IOException, SQLException{
 		
 		
@@ -170,12 +153,7 @@ public class DBManager implements Observer {
 				
 	}
 	
-	/**
-	 * supprime une liste de bases de données
-	 * @param dbNames : liste de noms de bases de données
-	 * @throws ClassNotFoundException
-	 * @throws SQLException
-	 */
+	
 	public void removeDb(ArrayList<String> dbNames) throws ClassNotFoundException, SQLException{
 		
 		
