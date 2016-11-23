@@ -18,7 +18,7 @@ import java.util.ArrayList;
  * @author franck
  *
  */
-public class DBManager implements Observer {
+public class DBManager implements Observer, IDBManager {
 
 	
 	// nom de la base de données des noms de base de données

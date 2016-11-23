@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import interfaces.Observer;
 
-public interface IDBManager{
+public interface IDBManager extends Observer{
 	
 	
 	/**
@@ -49,5 +49,13 @@ public interface IDBManager{
 	 * @throws SQLException
 	 */
 	public ArrayList<String> getTableNames(String dbName) throws ClassNotFoundException, SQLException;
+	
+	/**
+	 * 
+	 * @return retourne la liste des noms des DBs enregistrées.
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
+	public String [] getDbNames() throws ClassNotFoundException, SQLException;
 
 }

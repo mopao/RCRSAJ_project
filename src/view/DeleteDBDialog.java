@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import database.DBManager;
+import database.IDBManager;
 
 /**
  * boîte de dialogue permettant de supprimer des bases de données
@@ -30,12 +31,12 @@ import database.DBManager;
  */
 public class DeleteDBDialog extends JDialog {
 
-	private DBManager dbManager;
+	private IDBManager dbManager;
 	private ArrayList<String> listdbToDelete;
 	private String [] dbNames;
 	private JCheckBox []items;
 
-	public DeleteDBDialog(JFrame parent, String title, boolean modal,DBManager dbManager) throws ClassNotFoundException, SQLException{
+	public DeleteDBDialog(JFrame parent, String title, boolean modal,IDBManager dbManager) throws ClassNotFoundException, SQLException{
 	    super(parent, title, modal);
 		this.dbManager = dbManager;
 		this.setSize(450, 170);

@@ -48,6 +48,7 @@ import object.AttackGraph;
 import object.ConjonctiveRequest;
 import request.rewriting.RequestManager;
 import database.DBManager;
+import database.IDBManager;
 
 public class CqaView extends JFrame implements Observable{
 	
@@ -72,7 +73,7 @@ public class CqaView extends JFrame implements Observable{
 	
 	
 	private RequestParser parser=new RequestParser();
-	private DBManager dbManager=null;
+	private IDBManager dbManager=null;
 	private String dbSelected=null;
 	private RequestManager rqManager=null;
 	private ConjonctiveRequest q=null;
