@@ -3,6 +3,7 @@ package database;
  * représente la connexion à une base de données sqlite.
  */
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -19,7 +20,7 @@ public class SQLiteConnection extends DBConnection{
 	public Connection getDBconnection(String dbName) throws ClassNotFoundException, SQLException {
 		// TODO Auto-generated method stub
 		Class.forName("org.sqlite.JDBC");
-	    return DriverManager.getConnection("jdbc:sqlite:"+dbName+".db");
+	    return DriverManager.getConnection("jdbc:sqlite:"+new File(dbName+".db").getAbsolutePath());
 	}
 
 	

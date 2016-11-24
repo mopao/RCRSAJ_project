@@ -82,7 +82,7 @@ public class CqaView extends JFrame implements Observable{
 	private RequestManager rqManager=null;
 	private ConjonctiveRequest q=null;
 	private AttackGraph g=null;	
-	public CqaView(){
+	public CqaView(IDBConnection conect, String dbname){
 		JComponent.setDefaultLocale(Locale.ENGLISH);	
 		 try {
              UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -94,8 +94,14 @@ public class CqaView extends JFrame implements Observable{
         
 		try {
 			
-			dbConnection=new SQLiteConnection(ConnectionType.SQLITE);
-			rqManager=new RequestManager();
+			if(conect!=null && !dbname.isEmpty()){
+				dbConnection=conect;
+				dbSelected=dbname;
+				}
+			else{
+				dbConnection=new SQLiteConnection(ConnectionType.SQLITE);
+			}
+			rqManager=new RequestManager(dbConnection);
 			dbManager=new DBManager(dbConnection);
 			dbManager.addObservable(this);
 			
@@ -476,7 +482,9 @@ public class CqaView extends JFrame implements Observable{
 			
 			panCenter=new GraphPanel(w2, h2,null);
 			panDetails=new DetailsPanel(w2, h1);
-			resumePanel=new RecapPanel(w2, 95);			
+			resumePanel=new RecapPanel(w2, 95);		
+			if(dbSelected==null)
+				resumePanel.setDbSelected(dbSelected);
 		    
 			scroll=new JScrollPane(panDetails);
 			scroll.setPreferredSize(new Dimension(w2, h1));
@@ -675,9 +683,10 @@ public class CqaView extends JFrame implements Observable{
 	}
 	
 	
-	public static void main( String args[] ){
-		new CqaView();
-	}
+	/*public static void main( String args[] ){
+		
+		new CqaView(null,null);
+	}*/
 
 	@Override
 	public void setView(int compl) {

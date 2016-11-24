@@ -8,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
+import database.IDBConnection;
 import factory.BadRequestException;
 
 import object.Atom;
@@ -17,15 +19,17 @@ import object.RelationSchema;
 public class RequestManager {
 	
 	private IConsistentRewriter rewriterSql;
+	private IDBConnection conn =null;
 	
-	public RequestManager() {
+	public RequestManager(IDBConnection conect) throws ClassNotFoundException, SQLException {
 		super();
 		rewriterSql=new SQLConsistentRewriter();
+		conn=conect;
 	}
 	
 	
 	public ArrayList<ArrayList<String>> getRelationSchema(String table, String dbTorequest) throws ClassNotFoundException, SQLException{
-		  Connection c=getDbConnection(dbTorequest);
+		  Connection c=conn.getDBconnection(dbTorequest);
 		  c.setAutoCommit(false);
 	      DatabaseMetaData meta = c.getMetaData();
 	      ResultSet res = meta.getColumns(null, null, table, null);
@@ -98,7 +102,7 @@ public class RequestManager {
 		}
 		results.add(attributes);
 		String request=rewriterSql.notBoolRequestRewriting(formattedRequest, new ArrayList<String>());
-		Connection conn=getDbConnection(dbTorequest);
+		Connection conn=this.conn.getDBconnection(dbTorequest);
 		conn.setAutoCommit(false);
 		Statement stmt=conn.createStatement();
 		ResultSet rs = stmt.executeQuery( request+";" );
@@ -131,7 +135,7 @@ public class RequestManager {
 		ConjonctiveRequest q2=setupRelationSchemas(q, dbTorequest);		
 		SQLRequestFormat formattedRequest=new SQLRequestFormat(q2);
 		String request=rewriterSql.boolRequestRewriting(formattedRequest, new ArrayList<String>());
-		Connection conn=getDbConnection(dbTorequest);
+		Connection conn=this.conn.getDBconnection(dbTorequest);
 		conn.setAutoCommit(false);
 		Statement stmt=conn.createStatement();
 		ResultSet rs = stmt.executeQuery( request+";" );
@@ -156,7 +160,7 @@ public class RequestManager {
 		
 		ArrayList<ArrayList<Object>> results=new ArrayList<ArrayList<Object>>();
 		ArrayList<String>tableAttributes=getRelationSchema(table, dbTorequest).get(0);
-		Connection conn=getDbConnection(dbTorequest);
+		Connection conn=this.conn.getDBconnection(dbTorequest);
 		conn.setAutoCommit(false);
 		Statement stmt=conn.createStatement();
 		ResultSet rs = stmt.executeQuery( "SELECT * FROM "+table+";" );		 
@@ -181,11 +185,11 @@ public class RequestManager {
 	 * @throws ClassNotFoundException 
 	 * @throws SQLException 
 	 */
-	private Connection getDbConnection(String dbTorequest) throws ClassNotFoundException, SQLException{
+	/*private Connection getDbConnection(String dbTorequest) throws ClassNotFoundException, SQLException{
 		Class.forName("org.sqlite.JDBC");
 		
 	    return DriverManager.getConnection("jdbc:sqlite:"+new File(dbTorequest+".db").getAbsolutePath());
-	}
+	}*/
 	
 	/**
 	 * renvoie la réécriture consistente de la requête q

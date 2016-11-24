@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 public class MYSQLConnection extends DBConnection {	
 	
-	private String address=null, userName=null, password=null;
+	private String address=null, userName=null, password=null, dbName=null;
 	
     
 	public MYSQLConnection(ConnectionType type) {
@@ -20,11 +20,12 @@ public class MYSQLConnection extends DBConnection {
     
 	
 	public MYSQLConnection(ConnectionType type, String address,
-			String userName, String password) {
+			String userName, String password, String db) {
 		super(type);
 		this.address = address;
 		this.userName = userName;
 		this.password = password;
+		dbName=db;
 	}
 
 
@@ -33,8 +34,6 @@ public class MYSQLConnection extends DBConnection {
 			throws ClassNotFoundException, SQLException {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	
+	}	
 
 }
