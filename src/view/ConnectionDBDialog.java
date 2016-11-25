@@ -11,6 +11,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.font.TextAttribute;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.BoxLayout;
@@ -23,7 +24,9 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import database.ConnectionType;
 import database.IDBConnection;
+import database.MYSQLConnection;
 
 public class ConnectionDBDialog extends JDialog {
 	
@@ -32,7 +35,7 @@ public class ConnectionDBDialog extends JDialog {
 	private ArrayList<JTextField> listJtext;
 	private JPasswordField jtPassword;
 	private String [] tabTypeDb={" ","MYSQL"};
-	
+	//private HashMap<String, ConnectionType> typeconn;
 	private String [] tablabel={"Database type: ","Database name: ", "Address: ", "Username: ",
 			"Password"};
 	private String typeDb=null;
@@ -64,7 +67,6 @@ public class ConnectionDBDialog extends JDialog {
 
 	private void initComponent(){
 		
-		
 		JPanel control = new JPanel();
 		JButton BConn = new JButton("Connection");
 		JButton BCancel = new JButton("Cancel");
@@ -82,7 +84,18 @@ public class ConnectionDBDialog extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
+				System.out.println(typeDb+" "+listJtext.get(0).getText()+
+						" "+listJtext.get(1).getText()
+						+" "+listJtext.get(2).getText()+" "
+						+new String(jtPassword.getPassword()));
 				
+				if(typeDb.equals("MYSQL")){
+					IDBConnection conn=new MYSQLConnection(ConnectionType.MYSQL,
+							listJtext.get(1).getText(), listJtext.get(2).getText(), 
+							new String(jtPassword.getPassword()), listJtext.get(0).getText());
+				}
+				
+				dispose();
 			}
 		});
 		BCancel.setPreferredSize(new Dimension(120, 30));
