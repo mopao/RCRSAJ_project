@@ -37,7 +37,7 @@ public class ConnectionDBDialog extends JDialog {
 	
 	private ArrayList<JTextField> listJtext;
 	private JPasswordField jtPassword;
-	private String [] tabTypeDb={" ","MYSQL","SQLITE"};
+	private String [] tabTypeDb={" ","MYSQL"};
 	//private HashMap<String, ConnectionType> typeconn;
 	private String [] tablabel={"Database type: ","Database name: ", "Address: ", "Username: ",
 			"Password"};
