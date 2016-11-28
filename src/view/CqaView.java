@@ -466,7 +466,8 @@ public class CqaView extends JFrame implements Observable{
 			menuEdition.add(menuItem_displayanswer);
 			menuEdition.add(menuItem_displayTable);		
 			menuItem_displayanswer.setEnabled(false);
-			menuItem_displayTable.setEnabled(false);
+			if(dbSelected==null)
+				menuItem_displayTable.setEnabled(false);
 			menuEdition.addSeparator();
 			menu_bar.add(menuFichier);
 			menu_bar.add(menuEdition);
@@ -483,7 +484,7 @@ public class CqaView extends JFrame implements Observable{
 			panCenter=new GraphPanel(w2, h2,null);
 			panDetails=new DetailsPanel(w2, h1);
 			resumePanel=new RecapPanel(w2, 95);		
-			if(dbSelected==null)
+			if(dbSelected!=null)
 				resumePanel.setDbSelected(dbSelected);
 		    
 			scroll=new JScrollPane(panDetails);

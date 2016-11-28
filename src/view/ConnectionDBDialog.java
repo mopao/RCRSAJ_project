@@ -10,6 +10,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.font.TextAttribute;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,6 +22,7 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -34,7 +37,7 @@ public class ConnectionDBDialog extends JDialog {
 	
 	private ArrayList<JTextField> listJtext;
 	private JPasswordField jtPassword;
-	private String [] tabTypeDb={" ","MYSQL"};
+	private String [] tabTypeDb={" ","MYSQL","SQLITE"};
 	//private HashMap<String, ConnectionType> typeconn;
 	private String [] tablabel={"Database type: ","Database name: ", "Address: ", "Username: ",
 			"Password"};
@@ -92,10 +95,28 @@ public class ConnectionDBDialog extends JDialog {
 				if(typeDb.equals("MYSQL")){
 					IDBConnection conn=new MYSQLConnection(ConnectionType.MYSQL,
 							listJtext.get(1).getText(), listJtext.get(2).getText(), 
-							new String(jtPassword.getPassword()), listJtext.get(0).getText());
+							new String(jtPassword.getPassword()));
+					
+					try {
+						Connection c=conn.getDBconnection(listJtext.get(0).getText());
+						c.close();
+						
+						new CqaView(conn, listJtext.get(0).getText());
+						
+						dispose();
+						
+					} catch (ClassNotFoundException | SQLException e) {
+						// TODO Auto-generated catch block
+						JOptionPane.showMessageDialog(null,
+							    e.getMessage(),
+							    e.getClass().getSimpleName(),
+							    JOptionPane.ERROR_MESSAGE);
+					}
+					
+					
 				}
 				
-				dispose();
+				
 			}
 		});
 		BCancel.setPreferredSize(new Dimension(120, 30));
